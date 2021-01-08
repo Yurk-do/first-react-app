@@ -64,34 +64,46 @@ import App from "./App";
 
 // Деструктурирование
 
-const LoggedUserBlock = ({ isUserLogged }) => {
-  if (isUserLogged) return <span>User Name</span>;
-  else return <span>Please login</span>;
-};
+// const LoggedUserBlock = ({ isUserLogged }) => {
+//   if (isUserLogged) return <span>User Name</span>;
+//   else return <span>Please login</span>;
+// };
 
-const HeadersBlock = ({ numbers }) =>
-  numbers.map((number) => (
-    <React.Fragment>
-      <h2> Test sub-header {number}</h2>
-      <h3>Small header</h3>
-    </React.Fragment>
-  ));
+// const HeadersBlock = ({ numbers }) =>
+//   numbers.map((number) => (
+//     <React.Fragment>
+//       <h2> Test sub-header {number}</h2>
+//       <h3>Small header</h3>
+//     </React.Fragment>
+//   ));
 
-const GreeterBlock = ({ userName, arg1, arg2 }) => (
-  <h1>
-    Hi, {userName}, your sum = {arg1 + arg2}
-  </h1>
-);
+// const GreeterBlock = ({ userName, arg1, arg2 }) => (
+//   <h1>
+//     Hi, {userName}, your sum = {arg1 + arg2}
+//   </h1>
+// );
 
-const DemoPage = (props) => {
-  return (
-    <React.Fragment>
-      <LoggedUserBlock isUserLogged={true} />
-      <h1> Demo document with JSX {2 + 2}</h1>
-      <GreeterBlock userName="Fronend Developer" arg1={2} arg2={3} />
-      <HeadersBlock numbers={[1, 2, 3, 4, 5, 6, 7, 8]} />
-    </React.Fragment>
+// const DemoPage = (props) => {
+//   return (
+//     <React.Fragment>
+//       <LoggedUserBlock isUserLogged={true} />
+//       <h1> Demo document with JSX {2 + 2}</h1>
+//       <GreeterBlock userName="Fronend Developer" arg1={2} arg2={3} />
+//       <HeadersBlock numbers={[1, 2, 3, 4, 5, 6, 7, 8]} />
+//     </React.Fragment>
+//   );
+// };
+
+// ReactDOM.render(<DemoPage />, document.getElementById("root"));
+
+// Виртуальный ДОМ (ReactDom.render)
+
+setInterval(() => {
+  const element = (
+    <div>
+      <h2>Hello, world!!!</h2>
+      <h3>It is {new Date().toLocaleTimeString()}.</h3>
+    </div>
   );
-};
-
-ReactDOM.render(<DemoPage />, document.getElementById("root"));
+  ReactDOM.render(element, document.getElementById("root"));
+}, 1000);
