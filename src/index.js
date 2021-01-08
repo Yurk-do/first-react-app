@@ -98,12 +98,61 @@ import App from "./App";
 
 // Виртуальный ДОМ (ReactDom.render)
 
-setInterval(() => {
-  const element = (
-    <div>
-      <h2>Hello, world!!!</h2>
-      <h3>It is {new Date().toLocaleTimeString()}.</h3>
-    </div>
-  );
-  ReactDOM.render(element, document.getElementById("root"));
-}, 1000);
+// setInterval(() => {
+//   const element = (
+//     <div>
+//       <h2>Hello, world!!!</h2>
+//       <h3>It is {new Date().toLocaleTimeString()}.</h3>
+//     </div>
+//   );
+//   ReactDOM.render(element, document.getElementById("root"));
+// }, 1000);
+
+// Functional components versus Class components
+
+// function WelcomePanelF(props) {
+//   return <h1>Welcome, {props.name}</h1>;
+// }
+
+// class WelcomePanelC extends React.Component {
+//   render() {
+//     return <h1> Welcome, {this.props.name}</h1>;
+//   }
+// }
+
+// const element = (
+//   <React.Fragment>
+//     <WelcomePanelF name={"functional"} />
+//     <WelcomePanelC name={"class"} />
+//   </React.Fragment>
+// );
+
+// ReactDOM.render(element, document.getElementById("root"));
+
+// Сomposition
+
+function WelcomePanelF(props) {
+  return <h1>Welcome, {props.name}</h1>;
+}
+
+class WelcomePanelC extends React.Component {
+  render() {
+    return <h1> Welcome, {this.props.name}</h1>;
+  }
+}
+
+const MainPanel = (props) => (
+  <React.Fragment>
+    <WelcomePanelF name={props.nameF} />
+    <WelcomePanelC name={props.nameC} />
+  </React.Fragment>
+);
+
+const ContentArea = (props) => (
+  <MainPanel nameF={props.nameFunc} nameC={props.nameCl} />
+);
+
+ReactDOM.render(
+  <ContentArea nameFunc={"functional"} nameCl={"class"} />,
+  document.getElementById("root")
+);
