@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 
 import App from "./App";
+import { computeHeadingLevel } from "@testing-library/react";
 
 // ReactDOM.render(
 //   <React.StrictMode>
@@ -131,28 +132,76 @@ import App from "./App";
 
 // Сomposition
 
-function WelcomePanelF(props) {
-  return <h1>Welcome, {props.name}</h1>;
-}
+// function WelcomePanelF(props) {
+//   return <h1>Welcome, {props.name}</h1>;
+// }
 
-class WelcomePanelC extends React.Component {
+// class WelcomePanelC extends React.Component {
+//   render() {
+//     return <h1> Welcome, {this.props.name}</h1>;
+//   }
+// }
+
+// const MainPanel = (props) => (
+//   <React.Fragment>
+//     <WelcomePanelF name={props.nameF} />
+//     <WelcomePanelC name={props.nameC} />
+//   </React.Fragment>
+// );
+
+// const ContentArea = (props) => (
+//   <MainPanel nameF={props.nameFunc} nameC={props.nameCl} />
+// );
+
+// ReactDOM.render(
+//   <ContentArea nameFunc={"functional"} nameCl={"class"} />,
+//   document.getElementById("root")
+// );
+
+// STATE and Class component
+
+const FormattedDate = ({ date }) => <h2>It is {date.toLocaleTimeString()}.</h2>;
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { date: new Date() };
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    this.timerId = setInterval(() => this.tick(), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerId);
+  }
+
+  tick() {
+    this.setState({ date: new Date() });
+  }
+
+  handleClick(e) {
+    e.preventDefault();
+    console.log(`Happy New Year!!! + ${this.timerId}`);
+  }
   render() {
-    return <h1> Welcome, {this.props.name}</h1>;
+    return (
+      <React.Fragment>
+        <h1>Current time:</h1>
+        <FormattedDate date={this.state.date} />
+        <a href="#" onClick={this.handleClick}>
+          Happy New Year!!!
+        </a>
+      </React.Fragment>
+    );
   }
 }
-
-const MainPanel = (props) => (
+const App1 = () => (
   <React.Fragment>
-    <WelcomePanelF name={props.nameF} />
-    <WelcomePanelC name={props.nameC} />
+    <Clock />
   </React.Fragment>
 );
 
-const ContentArea = (props) => (
-  <MainPanel nameF={props.nameFunc} nameC={props.nameCl} />
-);
+ReactDOM.render(<App1 />, document.getElementById("root"));
 
-ReactDOM.render(
-  <ContentArea nameFunc={"functional"} nameCl={"class"} />,
-  document.getElementById("root")
-);
+// const element = React.createElement("Clock", {}, "");
