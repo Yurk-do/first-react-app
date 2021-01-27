@@ -196,12 +196,128 @@ class Clock extends React.Component {
     );
   }
 }
+
+const UserPlaceholder = ({ isUserLogged }) => {
+  const loggedElement = <div>Logged User</div>;
+  const notLoggedElement = <div>Not Logged User</div>;
+  return isUserLogged ? loggedElement : notLoggedElement;
+};
+
+const TodoSection = ({ todoList }) => (
+  <div>
+    <h1>My Todo</h1>
+    {todoList.length > 0 && (
+      <h2>You have {todoList.length} unfinished tasks </h2>
+    )}
+  </div>
+);
+
 const App1 = () => (
   <React.Fragment>
     <Clock />
+    <UserPlaceholder isUserLogged={false} />
+    <TodoSection todoList={[1, 2, 3]} />
   </React.Fragment>
 );
 
 ReactDOM.render(<App1 />, document.getElementById("root"));
 
 // const element = React.createElement("Clock", {}, "");
+
+// Hook UseReducer:
+
+const initialState = {
+  counters: [
+    {
+      id: 1,
+      value: 1,
+    },
+    {
+      id: 2,
+      value: 6,
+    },
+    {
+      id: 3,
+      value: 2,
+    },
+  ],
+};
+
+const updateCounter = (counters, id, step) => {
+  const newCounters = counters.map((counter) => ({
+    id: counter.id,
+    value: counter.value,
+  }));
+
+  const counterToChange = newCounters.find((counter) => counter.id === id);
+
+  if (counterToChange !== undefined) {
+    counterToChange.value += step;
+  }
+  return newCounters;
+};
+
+const addCounter = (counters) => {
+  const maxId = Math.max(...counters.map((counter) => counter.id));
+
+  let newCounters = counters.map((counter) => ({
+    id: counter.id,
+    value: counter.value,
+  }));
+  newCounters = [...newCounters, { id: maxId + 1, value: 0 }];
+  return newCounters;
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "increase":
+      return { counters: updateCounter(state.counters, action.id, 1) };
+    case "decrease":
+      return { counters: updateCounter(state.counters, action.id, -1) };
+    case "add":
+      return { counters: addCounter(state.counters) };
+    default:
+      throw new Error("Unknown action");
+  }
+};
+
+const Counter = ({ counter, minusHandler, plusHandler }) => (
+  <div>
+    Count: {counter}
+    <button onClick={minusHandler}>-</button>
+    <button onClick={plusHandler}>+</button>
+  </div>
+);
+
+const InfoPanel = ({ data }) => (
+  <div>
+    Sum:
+    <strong>{data.reduce((acc, value) => acc + value, 0)}</strong>
+  </div>
+);
+
+const CounterApp = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  return (
+    <>
+      {state.counters.map((counter) => (
+        <React.Fragment>
+          <Counter
+            key={counter.id}
+            counter={counter.value}
+            minusHandler={() => dispatch({ type: "decrease", id: counter.id })}
+            plusHandler={() => dispatch({ type: "increase", id: counter.id })}
+          />
+        </React.Fragment>
+      ))}
+      <input
+        type="button"
+        value="Add counter"
+        onClick={() => dispatch({ type: "add" })}
+      />
+
+      <InfoPanel data={state.counters.map((counter) => counter.value)} />
+    </>
+  );
+};
